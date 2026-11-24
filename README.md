@@ -8,7 +8,7 @@ Stack is FastAPI, SQLAlchemy 2, Alembic and uv.
 
 You create a source with `POST /sources` and get a secret back, once. The sender signs `<timestamp>.<body>` with HMAC-SHA256 using that secret and sends the result in `X-Relay-Signature`, with the timestamp in `X-Relay-Timestamp`. If the signature is wrong, or the timestamp is more than 5 minutes off, the request gets a 401 and nothing is saved.
 
-Valid events are stored. If the same `X-Event-Id` arrives twice, it is stored once. If the source has a `target_url`, the event is sent there with the same kind of signature. Network errors, 5xx, 408, 425 and 429 are retried up to 3 times, waiting twice as long each time. Other 4xx are not retried. Every attempt is saved, and `POST /events/{id}/redeliver` sends an event again.
+Valid events are stored. If the same `X-Event-Id` arrives twice, it is stored once. If the source has a `target_url`, the event is sent there with the same kind of signature. Network errors, 5xx, 408, 425 and 429 are retried, up to 3 attempts in total, waiting twice as long each time. Other 4xx are not retried. Every attempt is saved, and `POST /events/{id}/redeliver` sends an event again.
 
 You can list a source's events with `GET /sources/{id}/events` and open one with `GET /events/{id}`. Those routes and source creation need an `X-API-Key` header. Swagger is at `/docs`.
 
