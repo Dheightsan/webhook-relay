@@ -7,11 +7,10 @@ SIGNATURE_HEADER = "X-Relay-Signature"
 
 
 class SignatureError(Exception):
-    """Bad or missing signature."""
+    pass
 
 
 def sign(secret: str, timestamp: int, body: bytes) -> str:
-    """sha256=<hex> of "<timestamp>.<body>", so the timestamp can't be swapped."""
     message = f"{timestamp}.".encode() + body
     digest = hmac.new(secret.encode(), message, hashlib.sha256).hexdigest()
     return f"sha256={digest}"

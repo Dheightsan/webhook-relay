@@ -1,7 +1,4 @@
-"""Refuse delivery targets that resolve to non-public addresses.
-
-Best effort: httpx resolves the host again on connect, so DNS rebinding can get past it.
-"""
+# best effort, httpx resolves again on connect so rebinding can get past this
 
 import ipaddress
 import socket

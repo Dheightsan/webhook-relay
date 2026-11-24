@@ -25,7 +25,7 @@ class Outcome:
 
 
 class Deliverer:
-    """Forwards events to the source's target_url. Retries are in-process, not durable."""
+    # retries run in-process, a restart drops the waiting ones
 
     def __init__(
         self,
