@@ -119,7 +119,6 @@ def send_hook(client):
 
 @pytest.fixture
 def target(app):
-    """Replace the outgoing HTTP transport with one that records requests and plays responses."""
 
     class Target:
         def __init__(self) -> None:
