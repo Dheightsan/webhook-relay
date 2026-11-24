@@ -50,7 +50,7 @@ TEST_DATABASE_URL=postgresql+psycopg://user:pass@localhost:5432/relay_test uv ru
 
 The 44 tests pass on my machine against a real PostgreSQL. They apply the Alembic migration first and check it matches the models. To see that the signature tests mean something, I broke the check on purpose and 5 of them failed.
 
-I have not run the Dockerfile or `docker compose` at all. There is no Docker on my machine. The CI has a job that does it, so the first run on GitHub is the first real test of that part. The CI itself has not run yet either.
+There is no Docker on my machine, so the Dockerfile and `docker compose` only ran in CI. The `compose` job there runs the tests inside Compose, starts the stack and calls `/health` and `POST /sources`. It passed on the first run, along with lint, the tests, gitleaks and CodeQL. I have not tried `docker compose up` by hand.
 
 ## Limits
 
