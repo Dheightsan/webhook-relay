@@ -38,7 +38,6 @@ services:
       context: .
       target: test
     environment:
-      # The suite creates and wipes this database; it never touches "relay".
       TEST_DATABASE_URL: postgresql+psycopg://relay:${POSTGRES_PASSWORD}@db:5432/relay_test
     depends_on:
       db:

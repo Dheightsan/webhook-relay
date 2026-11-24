@@ -20,8 +20,6 @@ class SourceOut(BaseModel):
 
 
 class SourceCreated(SourceOut):
-    """Returned once, on creation. The secret is never shown again."""
-
     secret: str
     hook_path: str
 

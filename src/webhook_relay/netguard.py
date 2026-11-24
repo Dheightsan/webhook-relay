@@ -1,8 +1,6 @@
 """Refuse delivery targets that resolve to non-public addresses.
 
-This is a best-effort SSRF check: it resolves the host before each request, but
-the HTTP client resolves it again when it connects, so a DNS rebinding attack
-could still slip through. Redirects are never followed.
+Best effort: httpx resolves the host again on connect, so DNS rebinding can get past it.
 """
 
 import ipaddress

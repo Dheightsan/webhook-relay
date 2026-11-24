@@ -19,7 +19,6 @@ def test_event_is_forwarded_with_a_valid_signature(client, admin, make_source, s
     (request,) = target.requests
     assert str(request.url) == URL
     assert json.loads(request.content) == {"order": 7}
-    # The receiver can check it with the same scheme and the source secret.
     verify(
         source["secret"],
         request.headers[TIMESTAMP_HEADER],
@@ -74,8 +73,8 @@ def test_rate_limit_responses_are_retried(client, admin, make_source, send_hook,
 def test_private_target_is_blocked_at_delivery_time(
     app, client, admin, make_source, send_hook, target
 ):
-    source = make_source(target_url="http://127.0.0.1:9000/in")  # allowed while creating
-    app.state.settings.allow_private_targets = False  # policy tightened afterwards
+    source = make_source(target_url="http://127.0.0.1:9000/in")
+    app.state.settings.allow_private_targets = False
     event = detail(client, admin, send_hook(source, {"a": 1}))
 
     assert event["delivery_status"] == "failed"

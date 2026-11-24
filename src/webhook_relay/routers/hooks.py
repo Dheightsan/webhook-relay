@@ -15,7 +15,6 @@ router = APIRouter(tags=["hooks"])
 
 
 async def read_body(request: Request) -> bytes:
-    """Read the raw body (the signature covers the exact bytes) with a size cap."""
     limit: int = request.app.state.settings.max_body_bytes
     declared = request.headers.get("content-length")
     if declared and declared.isdigit() and int(declared) > limit:
@@ -69,7 +68,6 @@ def receive(
     try:
         db.commit()
     except IntegrityError:
-        # Same X-Event-Id sent twice: answer with the first event instead of storing another.
         db.rollback()
         existing = db.scalar(
             select(Event).where(Event.source_id == source.id, Event.external_id == event_id)

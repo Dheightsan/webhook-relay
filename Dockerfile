@@ -15,7 +15,6 @@ RUN uv sync --locked --no-dev
 RUN useradd --system --no-create-home relay
 USER relay
 EXPOSE 8000
-# Apply migrations, then serve. `exec` lets uvicorn receive SIGTERM.
 CMD ["sh", "-c", "alembic upgrade head && exec uvicorn webhook_relay.main:create_app --factory --host 0.0.0.0 --port 8000"]
 
 

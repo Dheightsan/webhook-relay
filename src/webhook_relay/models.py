@@ -20,8 +20,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from webhook_relay.db import Base
 
-# Event.delivery_status values
-STORED = "stored"  # source has no target_url, nothing to forward
+STORED = "stored"
 PENDING = "pending"
 DELIVERED = "delivered"
 FAILED = "failed"
@@ -36,7 +35,6 @@ class Source(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
     name: Mapped[str] = mapped_column(String(100))
-    # Needed in clear to compute HMACs, so it cannot be stored hashed.
     secret: Mapped[str] = mapped_column(String(64), default=new_secret)
     target_url: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

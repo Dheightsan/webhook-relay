@@ -25,12 +25,7 @@ class Outcome:
 
 
 class Deliverer:
-    """Forwards stored events to their source's target URL, signed and with retries.
-
-    Retries run inside the web process (FastAPI background tasks) and are not
-    durable: a restart drops attempts that were waiting. Events left in
-    `pending` can be re-sent with the redeliver endpoint.
-    """
+    """Forwards events to the source's target_url. Retries are in-process, not durable."""
 
     def __init__(
         self,

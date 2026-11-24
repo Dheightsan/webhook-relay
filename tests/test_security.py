@@ -38,7 +38,6 @@ def test_future_timestamp_is_rejected():
 
 
 def test_timestamp_is_part_of_the_signature():
-    # A signature made for an older timestamp cannot be reused with a fresh one.
     stale_signature = sign(SECRET, NOW - 10, BODY)
     with pytest.raises(SignatureError, match="mismatch"):
         check(str(NOW), stale_signature)

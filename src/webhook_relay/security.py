@@ -7,15 +7,11 @@ SIGNATURE_HEADER = "X-Relay-Signature"
 
 
 class SignatureError(Exception):
-    """The request cannot be trusted. The message is safe to show to the caller."""
+    """Bad or missing signature."""
 
 
 def sign(secret: str, timestamp: int, body: bytes) -> str:
-    """Return `sha256=<hex>` over `"<timestamp>." + body`.
-
-    The timestamp is part of the signed data so a captured request cannot be
-    replayed with a fresh timestamp.
-    """
+    """sha256=<hex> of "<timestamp>.<body>", so the timestamp can't be swapped."""
     message = f"{timestamp}.".encode() + body
     digest = hmac.new(secret.encode(), message, hashlib.sha256).hexdigest()
     return f"sha256={digest}"

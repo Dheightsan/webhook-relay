@@ -1,6 +1,6 @@
 # webhook-relay
 
-A small service that receives signed webhooks, stores them in PostgreSQL and forwards them to another URL, with retries. It is a practice project for a Python backend stack: FastAPI, SQLAlchemy 2, Alembic, uv, pytest against a real database, Docker Compose and GitHub Actions.
+Receives signed webhooks, stores them in PostgreSQL and forwards them to another URL with retries. FastAPI, SQLAlchemy 2, Alembic, uv and pytest.
 
 ## How it works
 
@@ -46,11 +46,11 @@ uv sync
 TEST_DATABASE_URL=postgresql+psycopg://user:pass@localhost:5432/relay_test uv run pytest
 ```
 
-The suite applies the Alembic migration, checks that it matches the models, and covers signatures, replays, duplicates, retries and the delivery guard. CI runs lint, tests, a Compose job, gitleaks and CodeQL. Actions are pinned by commit SHA.
+The suite runs the Alembic migration first and checks it matches the models. CI runs lint, the tests, a Compose job, gitleaks and CodeQL.
 
 ## Limits
 
 - Retries run inside the web process, with no queue. A restart loses the ones waiting. Those events stay `pending` and can be sent again with `redeliver`.
 - Targets that resolve to private or loopback addresses are refused, and redirects are not followed. The check resolves DNS before sending, so a DNS rebinding trick could still get past it.
 - Source secrets are stored in plain text because the HMAC needs them.
-- One shared admin key, no users and no rate limiting.
+- One shared admin key, no users, no rate limiting.
